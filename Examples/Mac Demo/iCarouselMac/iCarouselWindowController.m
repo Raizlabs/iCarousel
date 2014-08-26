@@ -235,6 +235,7 @@
         case iCarouselOptionFadeRange:
         case iCarouselOptionOffsetMultiplier:
         case iCarouselOptionVisibleItems:
+        case iCarouselOptionFadeWithOffset:
         {
             return value;
         }

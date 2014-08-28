@@ -812,6 +812,12 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     [containerView addSubview:view];
     containerView.layer.opacity = 0;
     
+#ifdef ICAROUSEL_MACOS
+    //center view
+    [containerView setFrameOrigin:NSMakePoint(self.bounds.size.width/2.0f + _contentOffset.width,
+                                              self.bounds.size.height/2.0f + _contentOffset.height)];
+#endif
+    
     return containerView;
 }
 
@@ -846,9 +852,6 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     
 #else
     
-    //center view
-    [view.superview setFrameOrigin:NSMakePoint(self.bounds.size.width/2.0 + _contentOffset.width,
-                                               self.bounds.size.height/2.0 + _contentOffset.height)];
     view.superview.layer.anchorPoint = CGPointMake(0.5, 0.5);
     
     //account for retina

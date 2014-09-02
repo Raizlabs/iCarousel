@@ -156,6 +156,7 @@ typedef NS_ENUM(NSInteger, iCarouselOption)
 - (void)reloadItemAtIndex:(NSInteger)index animated:(BOOL)animated;
 
 - (void)reloadData;
+- (void)queueItemView:(UIView *)view;
 
 @end
 

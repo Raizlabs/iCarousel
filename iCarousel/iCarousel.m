@@ -428,6 +428,9 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     if (view)
     {
         [self setItemView:view forIndex:index];
+
+        // Show the view for the first time
+        view.alphaValue = 1.0f;
     }
     self.itemViews = newItemViews;
 }
@@ -687,7 +690,6 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
                 tilt = -tilt;
                 offset = -offset;
                 angle = -angle;
-                
 #endif
                 return CATransform3DTranslate(transform, sinf(degreesToRadians(angle)) * offset * _itemWidth * spacing, offset * _itemWidth * tilt, offset * _itemWidth * spacing);
             }
@@ -1277,6 +1279,9 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     [self transformItemView:view atIndex:index];
     view.superview.layer.opacity = 0.0;
     
+    // Initially hide the view until it is first transformed or inserted
+    view.alphaValue = 0.0f;
+    
     [self popAnimationState];
     
     return view;
@@ -1346,6 +1351,9 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         {
             [self loadViewAtIndex:[number integerValue]];
         }
+        
+        // Show the view for the first time
+        view.alphaValue = 1.0f;
     }
 }
 
@@ -2223,8 +2231,13 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         }
         
         NSTimeInterval thisTime = [theEvent timestamp];
+        
+        translation = [theEvent deltaY] + [theEvent deltaX];
+        
         _startVelocity = -(translation / (thisTime - _startTime)) * factor * _scrollSpeed / _itemWidth;
         _startTime = thisTime;
+        
+        NSLog(@"velocity: %lf", _startVelocity);
         
         _scrollOffset -= translation * factor * _offsetMultiplier / _itemWidth;
         [self pushAnimationState:NO];
